@@ -1,5 +1,7 @@
-package lhind.AnnualLeave.AppUser;
+package lhind.AnnualLeave.Service;
 
+import lhind.AnnualLeave.AppUser.AppUser;
+import lhind.AnnualLeave.AppUser.AppUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

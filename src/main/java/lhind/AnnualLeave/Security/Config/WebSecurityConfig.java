@@ -1,7 +1,6 @@
 package lhind.AnnualLeave.Security.Config;
 
-import lhind.AnnualLeave.AppUser.AppUserService;
-import lhind.AnnualLeave.Security.PasswordEncoder;
+import lhind.AnnualLeave.Service.AppUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +24,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v*/registration/**")
-                .permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest()
                 .authenticated().and()
-                .formLogin();
+                .formLogin()
+                .loginPage("/login").permitAll();
     }
 
     @Override

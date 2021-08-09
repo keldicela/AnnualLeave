@@ -1,5 +1,6 @@
 package lhind.AnnualLeave.AppUser;
 
+import lhind.AnnualLeave.AppUser.AppUserRole;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,18 +31,14 @@ public class AppUser implements UserDetails {
     )
     @Id
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String username;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
-    private Boolean locked;
-    private Boolean enabled;
 
-    public AppUser(String firstName, String lastName, String email, String password, AppUserRole appUserRole) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public AppUser(String username, String email, String password, AppUserRole appUserRole) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.appUserRole = appUserRole;
@@ -60,27 +57,22 @@ public class AppUser implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
     public boolean isAccountNonExpired() {
         return false;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return !locked;
+        return false;
     }
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return false;
     }
 }
