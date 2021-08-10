@@ -1,8 +1,10 @@
 package lhind.AnnualLeave.AppUser;
 
+import lombok.Getter;
+
+@Getter
 public enum AppUserRole {
     USER,
     SUPERVISOR,
-    FINANCE,
     ADMIN_ROLE
 }

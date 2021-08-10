@@ -1,7 +1,7 @@
 package lhind.AnnualLeave.Registration;
 
 import lhind.AnnualLeave.AppUser.AppUser;
-import lhind.AnnualLeave.Service.AppUserService;
+import lhind.AnnualLeave.AppUser.AppUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,8 @@ public class RegistrationService {
         }
         return appUserService.signUpUser(
                 new AppUser(
-                        request.getUsername(),
+                        request.getFirstName(),
+                        request.getLastName(),
                         request.getEmail(),
                         request.getPassword(),
                         request.getRole())
