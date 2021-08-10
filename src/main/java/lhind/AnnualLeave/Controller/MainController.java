@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class MainController {
 
-    @Autowired
-    private RegistrationService registrationService;
-
     @GetMapping("login")
     public String getLoginView(){
         return "login";

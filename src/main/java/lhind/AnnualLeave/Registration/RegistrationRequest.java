@@ -13,4 +13,5 @@ public class RegistrationRequest {
     private final String email;
     private final String password;
     private final AppUserRole role;
+    private final Integer probation;
 }

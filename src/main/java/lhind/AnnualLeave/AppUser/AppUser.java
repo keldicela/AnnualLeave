@@ -1,6 +1,5 @@
 package lhind.AnnualLeave.AppUser;
 
-import lhind.AnnualLeave.AppUser.AppUserRole;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,7 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
+@Table(name = "users")
 public class AppUser implements UserDetails {
 
     @SequenceGenerator(
@@ -37,17 +37,20 @@ public class AppUser implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
+    private Integer probation;
 
     public AppUser(String firstName,
                    String lastName,
                    String email,
                    String password,
-                   AppUserRole appUserRole) {
+                   AppUserRole appUserRole,
+                   Integer probation) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.appUserRole = appUserRole;
+        this.probation = probation;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
