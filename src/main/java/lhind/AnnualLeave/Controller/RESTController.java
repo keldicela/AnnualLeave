@@ -1,10 +1,9 @@
 package lhind.AnnualLeave.Controller;
 
-import lhind.AnnualLeave.LeaveApplication.ApplicationRepository;
 import lhind.AnnualLeave.LeaveApplication.ApplicationRequest;
 import lhind.AnnualLeave.LeaveApplication.ApplicationService;
-import lhind.AnnualLeave.Registration.RegistrationRequest;
-import lhind.AnnualLeave.Registration.RegistrationService;
+import lhind.AnnualLeave.User.UserDTO;
+import lhind.AnnualLeave.User.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,7 @@ public class RESTController {
     private ApplicationService applicationService;
 
     @PostMapping("registration")
-    public String register(@RequestBody RegistrationRequest request){
+    public String register(@RequestBody UserDTO request){
         return registrationService.register(request);
     }
 

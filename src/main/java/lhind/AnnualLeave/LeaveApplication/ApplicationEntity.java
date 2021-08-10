@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "applications")
-public class LeaveApplication {
+public class ApplicationEntity {
     @SequenceGenerator(
             name = "application_sequence",
             sequenceName = "application_sequence",
@@ -32,7 +32,7 @@ public class LeaveApplication {
     private Integer days;
     private String status;
 
-    public LeaveApplication(String email, Date dateFrom, Date dateTo) {
+    public ApplicationEntity(String email, Date dateFrom, Date dateTo) {
         this.email = email;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;

@@ -1,17 +1,16 @@
-package lhind.AnnualLeave.Registration;
+package lhind.AnnualLeave.User;
 
-import lhind.AnnualLeave.AppUser.AppUserRole;
 import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class RegistrationRequest {
+public class UserDTO {
     private final String firstName;
     private final String lastName;
     private final String email;
     private final String password;
-    private final AppUserRole role;
+    private final UserRole role;
     private final Integer probation;
 }

@@ -1,4 +1,4 @@
-package lhind.AnnualLeave.AppUser;
+package lhind.AnnualLeave.User;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,8 +18,7 @@ import java.util.Collections;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class AppUser implements UserDetails {
-
+public class UserEntity implements UserDetails {
     @SequenceGenerator(
             name = "user_sequence",
             sequenceName = "user_Sequence",
@@ -36,26 +35,26 @@ public class AppUser implements UserDetails {
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
-    private AppUserRole appUserRole;
+    private UserRole userRole;
     private Integer probation;
 
-    public AppUser(String firstName,
-                   String lastName,
-                   String email,
-                   String password,
-                   AppUserRole appUserRole,
-                   Integer probation) {
+    public UserEntity(String firstName,
+                      String lastName,
+                      String email,
+                      String password,
+                      UserRole userRole,
+                      Integer probation) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.appUserRole = appUserRole;
+        this.userRole = userRole;
         this.probation = probation;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority(appUserRole.name());
+                new SimpleGrantedAuthority(userRole.name());
         return Collections.singleton(authority);
     }
 
