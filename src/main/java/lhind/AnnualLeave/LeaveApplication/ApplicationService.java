@@ -1,5 +1,6 @@
 package lhind.AnnualLeave.LeaveApplication;
 
+import lhind.AnnualLeave.User.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,8 @@ import java.util.List;
 @Service
 public class ApplicationService {
 
+    private UserRepository userRepository;
+
     private ApplicationRepository applicationRepository;
 
     public List<ApplicationEntity> getAllApplications(){
@@ -16,6 +19,11 @@ public class ApplicationService {
     }
 
      public void saveApplication(ApplicationDTO applicationDTO){
+        Integer repo = userRepository.getProbation(applicationDTO.getEmail());
+         if(repo<90){
+             throw new IllegalStateException("User has less that 100 days of probation.");
+         }
+             System.out.println(repo);
 
 //         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
 //         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

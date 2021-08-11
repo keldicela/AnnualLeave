@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
@@ -24,6 +25,11 @@ public class ConfirmationToken {
     @Id
     private Long id;
     private String token;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private LocalDateTime expiresAt;
+    private LocalDateTime confirmedAt;
     @ManyToOne
     @JoinColumn(
             nullable = false,
@@ -31,8 +37,10 @@ public class ConfirmationToken {
     )
     private UserEntity user;
 
-    public ConfirmationToken(String token, UserEntity userEntity) {
+    public ConfirmationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, UserEntity user) {
         this.token = token;
-        this.user = userEntity;
+        this.createdAt = createdAt;
+        this.expiresAt = expiresAt;
+        this.user = user;
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("/")
-public class MainController {
+public class Controllers {
 
     @Autowired
     private ApplicationService applicationService;
@@ -19,11 +19,12 @@ public class MainController {
 
     @GetMapping("home")
     public String getHomePage(Model model){
-        model.addAttribute("listApplications",applicationService.getAllApplications());
+        model.addAttribute("listApplications", applicationService.getAllApplications());
         return "home";
     }
-    @GetMapping ("confirmPassword")
-    public String confirmPassword(@RequestParam String token){
-        return "confirmPassword";
+
+    @GetMapping("index")
+    public String getIndex(Model model){
+        return "index";
     }
 }

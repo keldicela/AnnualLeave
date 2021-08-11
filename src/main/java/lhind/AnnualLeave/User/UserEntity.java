@@ -37,6 +37,8 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private Integer probation;
+    private Boolean locked = false;
+    private Boolean enabled = false;
 
     public UserEntity(String firstName,
                       String lastName,
@@ -70,7 +72,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !locked;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override

@@ -10,18 +10,16 @@
 </head>
 <body>
 <div class="container-fluid text-center">
-
     <div>
         <span class="material-icons-outlined">
-check
 </span>
     </div>
-    <img width="220px" height="220px" th:src="@{/images/lufthansa.jpg}"/>
+<!--    <img width="220px" height="220px" th:src="@{~/lufthansa.png}"/>-->
     <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">Annual Leave</h2>
+        <h2 class="form-signin-heading">Sign In</h2>
         <p>
             <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+            <input type="text" id="username" name="username" class="form-control" placeholder="Email" required="" autofocus="">
         </p>
         <p>
             <label for="password" class="sr-only">Password</label>

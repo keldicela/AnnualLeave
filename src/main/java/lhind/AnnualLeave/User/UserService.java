@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,15 +39,18 @@ public class UserService implements UserDetailsService {
         if (userExists){
             throw new IllegalStateException("Email already taken.");
         }
-//        String encodedPassword = bCryptPasswordEncoder.encode(userEntity.getPassword());
-//        userEntity.setPassword(encodedPassword);
+        String encodedPassword = bCryptPasswordEncoder.encode(userEntity.getPassword());
+        userEntity.setPassword(encodedPassword);
         userRepository.save(userEntity);
 
         String token  = UUID.randomUUID().toString();
-        ConfirmationToken confirmation = new ConfirmationToken(token, userEntity);
+        ConfirmationToken confirmation = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), userEntity);
         confirmationTokenService.saveConfirmationToken(confirmation);
 
-
         return token;
+    }
+
+    public int enableAppUser(String email) {
+        return userRepository.enableAppUser(email);
     }
 }

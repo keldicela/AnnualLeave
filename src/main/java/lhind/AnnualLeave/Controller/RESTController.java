@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="api")
+@RequestMapping(path="/api")
 @AllArgsConstructor
 public class RESTController {
 
@@ -20,7 +20,7 @@ public class RESTController {
 
     private UserService userService;
 
-    @PostMapping("register")
+    @PostMapping("signUp/register")
     public String register(@RequestBody UserDTO request){
         return registrationService.register(request);
     }
@@ -40,4 +40,8 @@ public class RESTController {
         return userService.getAllUsers();
     }
 
+    @GetMapping(path = "signUp/confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return registrationService.confirmToken(token);
+    }
 }
