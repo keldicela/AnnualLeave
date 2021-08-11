@@ -1,14 +1,13 @@
 package lhind.AnnualLeave.Controller;
 
-import lhind.AnnualLeave.LeaveApplication.ApplicationRequest;
+import lhind.AnnualLeave.LeaveApplication.ApplicationDTO;
+import lhind.AnnualLeave.LeaveApplication.ApplicationEntity;
 import lhind.AnnualLeave.LeaveApplication.ApplicationService;
-import lhind.AnnualLeave.User.UserDTO;
-import lhind.AnnualLeave.User.RegistrationService;
+import lhind.AnnualLeave.User.*;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path="api")
@@ -19,13 +18,28 @@ public class RESTController {
 
     private ApplicationService applicationService;
 
-    @PostMapping("registration")
+    private UserService userService;
+
+
+    @PostMapping("register")
     public String register(@RequestBody UserDTO request){
         return registrationService.register(request);
     }
 
-    @PostMapping("newApplication")
-    public void register(@RequestBody ApplicationRequest applicationRequest){
-        applicationService.saveApplication(applicationRequest);
+    @PostMapping("saveApplication")
+    public void saveApplication(@RequestBody ApplicationDTO applicationDTO){
+        applicationService.saveApplication(applicationDTO);
     }
+
+    @GetMapping("getApplications")
+    public List<ApplicationEntity> getApplications(){
+        return applicationService.getAllApplications();
+    }
+
+    @GetMapping("getUsers")
+    public List<UserEntity> getUsers(){
+        return userService.getAllUsers();
+    }
+
+
 }

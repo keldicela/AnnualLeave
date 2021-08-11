@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @ToString
-public class ApplicationRequest {
+public class ApplicationDTO {
     private String email;
     private Date dateFrom;
     private Date dateTo;

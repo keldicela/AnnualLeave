@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
@@ -34,5 +36,9 @@ public class UserService implements UserDetailsService {
         userRepository.save(userEntity);
         //TODO: Send confirmation token.
         return "User Registered";
+    }
+
+    public List<UserEntity> getAllUsers(){
+        return userRepository.findAll();
     }
 }

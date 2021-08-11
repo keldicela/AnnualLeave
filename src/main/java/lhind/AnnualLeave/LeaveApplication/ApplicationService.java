@@ -1,8 +1,9 @@
 package lhind.AnnualLeave.LeaveApplication;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -10,7 +11,11 @@ public class ApplicationService {
 
     private ApplicationRepository applicationRepository;
 
-     public void saveApplication(ApplicationRequest applicationRequest){
+    public List<ApplicationEntity> getAllApplications(){
+        return applicationRepository.findAll();
+    }
+
+     public void saveApplication(ApplicationDTO applicationDTO){
 
 //         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
 //         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -20,9 +25,9 @@ public class ApplicationService {
 //         final long days = ChronoUnit.DAYS.between(firstDate, secondDate);
 
          applicationRepository.save(new ApplicationEntity(
-                applicationRequest.getEmail(),
-                applicationRequest.getDateFrom(),
-                applicationRequest.getDateTo()
+                applicationDTO.getEmail(),
+                applicationDTO.getDateFrom(),
+                applicationDTO.getDateTo()
         ));
     }
 }

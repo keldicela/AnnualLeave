@@ -1,13 +1,11 @@
 package lhind.AnnualLeave.LeaveApplication;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@ToString
 @Getter
 @Setter
 @EqualsAndHashCode
