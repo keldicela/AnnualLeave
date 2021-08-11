@@ -20,7 +20,6 @@ public class RESTController {
 
     private UserService userService;
 
-
     @PostMapping("register")
     public String register(@RequestBody UserDTO request){
         return registrationService.register(request);
@@ -40,6 +39,5 @@ public class RESTController {
     public List<UserEntity> getUsers(){
         return userService.getAllUsers();
     }
-
 
 }

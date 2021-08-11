@@ -1,5 +1,8 @@
 package lhind.AnnualLeave.User;
 
+import lhind.AnnualLeave.Token.ConfirmationToken;
+import lhind.AnnualLeave.Token.ConfirmationTokenRepository;
+import lhind.AnnualLeave.Token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -15,8 +19,13 @@ public class UserService implements UserDetailsService {
 
     private final static String USER_NOT_FOUND = "User with username %s not found.";
     private final UserRepository userRepository;
-
+    private final ConfirmationTokenService confirmationTokenService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+    public List<UserEntity> getAllUsers(){
+        return userRepository.findAll();
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email)
@@ -26,19 +35,18 @@ public class UserService implements UserDetailsService {
 
     public String signUpUser(UserEntity userEntity){
         boolean userExists = userRepository.findByEmail(userEntity.getEmail()).isPresent();
-
         if (userExists){
             throw new IllegalStateException("Email already taken.");
         }
-
-        String encodedPassword = bCryptPasswordEncoder.encode(userEntity.getPassword());
-        userEntity.setPassword(encodedPassword);
+//        String encodedPassword = bCryptPasswordEncoder.encode(userEntity.getPassword());
+//        userEntity.setPassword(encodedPassword);
         userRepository.save(userEntity);
-        //TODO: Send confirmation token.
-        return "User Registered";
-    }
 
-    public List<UserEntity> getAllUsers(){
-        return userRepository.findAll();
+        String token  = UUID.randomUUID().toString();
+        ConfirmationToken confirmation = new ConfirmationToken(token, userEntity);
+        confirmationTokenService.saveConfirmationToken(confirmation);
+
+
+        return token;
     }
 }
