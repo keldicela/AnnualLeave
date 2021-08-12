@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="index.html :: headerfiles">
+    <meta charset="UTF-8">
+    <title>Employee Management System</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<header th:insert="index.html :: nav"></header>
+<div class="container">
+    <hr>
+    <h2>Add User</h2>
+
+    <form action="#" th:action="@{/signUp/register}" th:object="${user}"
+          method="POST">
+        <input type="text" th:field="*{firstName}"
+               placeholder="First Name" class="form-control mb-4 col-4">
+
+        <input type="text" th:field="*{lastName}"
+               placeholder="Last Name" class="form-control mb-4 col-4">
+
+        <input type="email" th:field="*{email}"
+               placeholder="Email" class="form-control mb-4 col-4">
+        <input type="password" th:field="*{password}"
+               placeholder="Password" class="form-control mb-4 col-4">
+        <select th:field="*{userRole}"  class="form-control mb-4 col-4">
+            <option th:value="USER" th:text="User"></option>
+            <option th:value="SUPERVISOR" th:text="Supervisor"></option>
+            <option th:value="ADMIN" th:text="Administrator"></option>
+        </select>
+        <input type="number" th:field="*{probation}"
+               placeholder="Probation" class="form-control mb-4 col-4">
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+    </form>
+    <hr>
+    <a th:href = "@{/}">Back to Users</a>
+</div>
+</body>
+</html>

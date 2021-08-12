@@ -1,14 +1,15 @@
 package lhind.AnnualLeave.LeaveApplication;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @ToString
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "applications")
@@ -25,14 +26,17 @@ public class ApplicationEntity {
     @Id
     private Long id;
     private String email;
-    private Date dateFrom;
-    private Date dateTo;
-    private Integer days;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateFrom;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateTo;
+    private Long days;
     private String status;
 
-    public ApplicationEntity(String email, Date dateFrom, Date dateTo) {
+    public ApplicationEntity(String email, LocalDate dateFrom, LocalDate dateTo, Long days) {
         this.email = email;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+        this.days = days;
     }
 }

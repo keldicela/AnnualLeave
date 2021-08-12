@@ -60,6 +60,7 @@ public class UserEntity implements UserDetails {
         return Collections.singleton(authority);
     }
 
+
     @Override
     public String getUsername() {
         return email;

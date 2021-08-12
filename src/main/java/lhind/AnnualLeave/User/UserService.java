@@ -46,7 +46,6 @@ public class UserService implements UserDetailsService {
         String token  = UUID.randomUUID().toString();
         ConfirmationToken confirmation = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), userEntity);
         confirmationTokenService.saveConfirmationToken(confirmation);
-
         return token;
     }
 

@@ -1,6 +1,5 @@
 package lhind.AnnualLeave.Controller;
 
-import lhind.AnnualLeave.LeaveApplication.ApplicationDTO;
 import lhind.AnnualLeave.LeaveApplication.ApplicationEntity;
 import lhind.AnnualLeave.LeaveApplication.ApplicationService;
 import lhind.AnnualLeave.User.*;
@@ -26,18 +25,8 @@ public class RESTController {
     }
 
     @PostMapping("saveApplication")
-    public void saveApplication(@RequestBody ApplicationDTO applicationDTO){
-        applicationService.saveApplication(applicationDTO);
-    }
-
-    @GetMapping("getApplications")
-    public List<ApplicationEntity> getApplications(){
-        return applicationService.getAllApplications();
-    }
-
-    @GetMapping("getUsers")
-    public List<UserEntity> getUsers(){
-        return userService.getAllUsers();
+    public void saveApplication(@RequestBody ApplicationEntity applicationEntity){
+        applicationService.saveApplication(applicationEntity);
     }
 
     @GetMapping(path = "signUp/confirm")

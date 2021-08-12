@@ -4,6 +4,11 @@ import lhind.AnnualLeave.User.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,24 +23,20 @@ public class ApplicationService {
         return applicationRepository.findAll();
     }
 
-     public void saveApplication(ApplicationDTO applicationDTO){
-        Integer repo = userRepository.getProbation(applicationDTO.getEmail());
+     public void saveApplication(ApplicationEntity applicationEntity){
+        Integer repo = userRepository.getProbation(applicationEntity.getEmail());
          if(repo<90){
-             throw new IllegalStateException("User has less that 100 days of probation.");
+             throw new IllegalStateException("User has less that 90 days of probation.");
          }
-             System.out.println(repo);
 
-//         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
-//         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-//
-//         final LocalDate firstDate = LocalDate.parse(applicationRequest.getDateFrom().toString(), formatter);
-//         final LocalDate secondDate = LocalDate.parse(applicationRequest.getDateTo().toString(), formatter);
-//         final long days = ChronoUnit.DAYS.between(firstDate, secondDate);
+         final long days = (ChronoUnit.DAYS.between(applicationEntity.getDateFrom(), applicationEntity.getDateTo()))+1;
+         final long weekDays = days - 2*(days/7); //remove weekends
 
          applicationRepository.save(new ApplicationEntity(
-                applicationDTO.getEmail(),
-                applicationDTO.getDateFrom(),
-                applicationDTO.getDateTo()
+                 applicationEntity.getEmail(),
+                 applicationEntity.getDateFrom(),
+                 applicationEntity.getDateTo(),
+                 weekDays
         ));
     }
 }

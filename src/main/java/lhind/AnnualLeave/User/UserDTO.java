@@ -2,10 +2,12 @@ package lhind.AnnualLeave.User;
 
 import lombok.*;
 
+import javax.persistence.Entity;
+
 @Getter
-@AllArgsConstructor
+@Setter
 @EqualsAndHashCode
-@ToString
+@AllArgsConstructor
 public class UserDTO {
     private final String firstName;
     private final String lastName;
