@@ -1,5 +1,6 @@
 package lhind.AnnualLeave.User;
 
+import lhind.AnnualLeave.LeaveApplication.ApplicationEntity;
 import lhind.AnnualLeave.Token.ConfirmationToken;
 import lhind.AnnualLeave.Token.ConfirmationTokenRepository;
 import lhind.AnnualLeave.Token.ConfirmationTokenService;
@@ -47,6 +48,25 @@ public class UserService implements UserDetailsService {
         ConfirmationToken confirmation = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), userEntity);
         confirmationTokenService.saveConfirmationToken(confirmation);
         return token;
+    }
+
+    public UserEntity findUserById(Long id){
+        return userRepository.getById(id);
+    }
+
+
+    public void updateUser(UserEntity userEntity){
+        userRepository.save(userEntity.getId(),
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getEmail(),
+                userEntity.getUserRole(),
+                userEntity.getProbation());
+    }
+
+    public void deleteUser(Long id){
+        confirmationTokenService.deleteUserToken(id);
+        userRepository.deleteById(id);
     }
 
     public int enableAppUser(String email) {

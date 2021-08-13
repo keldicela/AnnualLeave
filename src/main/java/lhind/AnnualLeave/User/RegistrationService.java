@@ -23,7 +23,7 @@ public class RegistrationService {
                         user.getLastName(),
                         user.getEmail(),
                         user.getPassword(),
-                        user.getRole(),
+                        user.getUserRole(),
                         user.getProbation()));
 
         String link = "http://localhost:7799/api/signUp/confirm?token=" + token;

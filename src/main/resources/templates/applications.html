@@ -20,6 +20,7 @@
             <th>From</th>
             <th>To</th>
             <th>Days</th>
+            <th>Status</th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +29,11 @@
             <td th:text="${applications.dateFrom}"></td>
             <td th:text="${applications.dateTo}"></td>
             <td th:text="${applications.days}"></td>
+            <td th:text="${applications.status}"></td>
+            <td>
+                <a th:href="@{/showUpdateApplication/{id}(id=${applications.id})}" class="btn btn-primary">Update</a>
+                <a th:href="@{/deleteApplication/{id}(id=${applications.id})}" class="btn btn-danger">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>

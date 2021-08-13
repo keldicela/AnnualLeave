@@ -30,6 +30,11 @@
             <td th:text="${user.email}"></td>
             <td th:text="${user.probation}"></td>
             <td th:text="${user.userRole}"></td>
+            <td>
+                //Only for Admin
+                <a th:href="@{/showUpdateUser/{id}(id=${user.id})}" class="btn btn-primary">Update</a>
+                <a th:href="@{/deleteUser/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>

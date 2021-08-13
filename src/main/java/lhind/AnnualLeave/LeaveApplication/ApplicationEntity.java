@@ -5,7 +5,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @ToString
 @Getter
@@ -31,12 +30,7 @@ public class ApplicationEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateTo;
     private Long days;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ApplicationStatus status;
 
-    public ApplicationEntity(String email, LocalDate dateFrom, LocalDate dateTo, Long days) {
-        this.email = email;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
-        this.days = days;
-    }
 }

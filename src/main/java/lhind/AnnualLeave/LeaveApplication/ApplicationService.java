@@ -4,10 +4,7 @@ import lhind.AnnualLeave.User.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -29,14 +26,30 @@ public class ApplicationService {
              throw new IllegalStateException("User has less that 90 days of probation.");
          }
 
-         final long days = (ChronoUnit.DAYS.between(applicationEntity.getDateFrom(), applicationEntity.getDateTo()))+1;
-         final long weekDays = days - 2*(days/7); //remove weekends
+         if(applicationEntity.getStatus()!=null){
+             applicationRepository.updateStatus(applicationEntity.getStatus(), applicationEntity.getId());
+         }
+         else{
+         ApplicationEntity application = new ApplicationEntity();
+         application.setId(applicationEntity.getId());
+         application.setEmail(applicationEntity.getEmail());
+         application.setDateFrom(applicationEntity.getDateFrom());
+         application.setDateTo(applicationEntity.getDateTo());
+         application.setDays(getWeekDays(applicationEntity.getDateFrom(), applicationEntity.getDateTo()));
+         application.setDays(getWeekDays(applicationEntity.getDateFrom(), applicationEntity.getDateTo()));
+         application.setStatus(ApplicationStatus.PENDING);
 
-         applicationRepository.save(new ApplicationEntity(
-                 applicationEntity.getEmail(),
-                 applicationEntity.getDateFrom(),
-                 applicationEntity.getDateTo(),
-                 weekDays
-        ));
+         applicationRepository.save(application);
+         }
+    }
+
+    public ApplicationEntity findApplicationById(long id){
+        return applicationRepository.getById(id);
+    }
+
+    public long getWeekDays(LocalDate dayFrom, LocalDate dayTo){
+        final long days = (ChronoUnit.DAYS.between(dayFrom, dayTo))+1;
+        final long weekDays = days - 2*(days/7); //remove weekends
+        return weekDays;
     }
 }

@@ -13,6 +13,6 @@ public class UserDTO {
     private final String lastName;
     private final String email;
     private final String password;
-    private final UserRole role;
+    private final UserRole userRole;
     private final Integer probation;
 }
