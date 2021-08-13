@@ -14,5 +14,7 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
             "WHERE a.id = :id", nativeQuery = true)
     void updateStatus(ApplicationStatus status, Long id);
 
+    @Query(value = "select * from applications a where a.email = :email", nativeQuery = true)
+    List<ApplicationEntity> findApplicationsByEmail(String email);
 }
 

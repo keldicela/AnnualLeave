@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:insert="index.html :: headerfiles">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8">
     <title>New Application</title>
     <link rel="stylesheet"
@@ -18,10 +17,8 @@
     <form action="#" th:action="@{/saveApplication}" th:object="${application}"
           method="POST">
 
-<!--        <sec:authorize access="hasRole('USER')">-->
-        <input type="text" th:field="*{email}" th:value="${#request.remoteUser}"
-                placeholder="Email"  class="form-control mb-4 col-4">
-<!--        </sec:authorize>-->
+        <input type="hidden" th:field="*{email}" th:value="${#request.remoteUser}"
+               placeholder="Email"  class="form-control mb-4 col-4">
 
         <input type="date" th:field="*{dateFrom}"
                placeholder="From" class="form-control mb-4 col-4">
@@ -34,5 +31,10 @@
     <hr>
     <a th:href = "@{/}">Back</a>
 </div>
+</body>
+</html></title>
+</head>
+<body>
+
 </body>
 </html>

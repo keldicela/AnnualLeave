@@ -78,9 +78,22 @@ public class Controllers {
         return "new_application";
     }
 
+    @GetMapping("newApplicationByUser")
+    public String newApplicationByUser(Model model){
+        ApplicationEntity application = new ApplicationEntity();
+        model.addAttribute("application", application);
+        return "new_application_user";
+    }
+
     @GetMapping("getApplications")
     public String getApplications(Model model){
         model.addAttribute("listOfApplications", applicationService.getAllApplications());
+        return "applications";
+    }
+
+    @GetMapping("/getApplicationsByUser/{email}")
+    public String getApplicationsById(@PathVariable (value="email") String email, Model model) {
+        model.addAttribute("listOfApplications", applicationService.getApplicationsByUser(email));
         return "applications";
     }
 

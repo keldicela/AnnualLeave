@@ -20,6 +20,10 @@ public class ApplicationService {
         return applicationRepository.findAll();
     }
 
+    public List<ApplicationEntity> getApplicationsByUser(String email){
+        return applicationRepository.findApplicationsByEmail(email);
+    }
+
      public void saveApplication(ApplicationEntity applicationEntity){
         Integer repo = userRepository.getProbation(applicationEntity.getEmail());
          if(repo<90){

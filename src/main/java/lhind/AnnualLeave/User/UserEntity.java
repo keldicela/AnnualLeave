@@ -50,6 +50,7 @@ public class UserEntity implements UserDetails {
         this.userRole = userRole;
         this.probation = probation;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =
