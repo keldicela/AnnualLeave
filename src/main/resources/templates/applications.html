@@ -12,10 +12,7 @@
 <header th:insert="index.html :: nav"></header>
 <div class="container my-2">
     <h1>Applications List</h1>
-
-        <a th:href = "@{/newApplicationByUser}" class="btn btn-primary btn-sm mb-3"> Add Application </a>
-
-    <!--    <a th:href = "@{/newApplication}" class="btn btn-primary btn-sm mb-3"> Add Application </a>-->
+        <a th:href = "@{/newApplication}" class="btn btn-primary btn-sm mb-3"> Add Application </a>
     <table class="table table-striped table-responsive-md">
         <thead>
         <tr>
@@ -34,8 +31,8 @@
             <td th:text="${applications.days}"></td>
             <td th:text="${applications.status}"></td>
             <td>
-                <a th:href="@{/showUpdateApplication/{id}(id=${applications.id})}" class="btn btn-primary">Update</a>
-                <a th:href="@{/deleteApplication/{id}(id=${applications.id})}" class="btn btn-danger">Delete</a>
+                <a sec:authorize="hasAuthority('SUPERVISOR')" th:href="@{/showUpdateApplication/{id}(id=${applications.id})}" class="btn btn-primary">Update</a>
+                <a sec:authorize="hasAuthority('SUPERVISOR')" th:href="@{/deleteApplication/{id}(id=${applications.id})}" class="btn btn-danger">Delete</a>
             </td>
         </tr>
         </tbody>

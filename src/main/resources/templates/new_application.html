@@ -15,13 +15,24 @@
     <hr>
     <h2>New Application</h2>
 
-    <form action="#" th:action="@{/saveApplication}" th:object="${application}"
+    <form sec:authorize="hasAuthority('SUPERVISOR')" action="#" th:action="@{/saveApplication}" th:object="${application}"
           method="POST">
 
-<!--        <sec:authorize access="hasRole('USER')">-->
-        <input type="text" th:field="*{email}" th:value="${#request.remoteUser}"
-                placeholder="Email"  class="form-control mb-4 col-4">
-<!--        </sec:authorize>-->
+        <input sec:authorize="hasAuthority('SUPERVISOR')" type="text" th:field="*{email}"
+               placeholder="Email"  class="form-control mb-4 col-4">
+
+        <input type="date" th:field="*{dateFrom}"
+               placeholder="From" class="form-control mb-4 col-4">
+
+        <input type="date" th:field="*{dateTo}"
+               placeholder="To" class="form-control mb-4 col-4">
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+    </form>
+
+
+    <form sec:authorize="hasAuthority('USER')" action="#" th:action="@{/saveApplicationForUser/{email}(email=${#request.remoteUser})}" th:object="${application}"
+          method="POST">
 
         <input type="date" th:field="*{dateFrom}"
                placeholder="From" class="form-control mb-4 col-4">

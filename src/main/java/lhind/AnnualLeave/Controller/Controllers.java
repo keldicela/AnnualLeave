@@ -51,21 +51,21 @@ public class Controllers {
         return "users";
     }
 
-    @GetMapping("/showUpdateUser/{id}")
+    @GetMapping("showUpdateUser/{id}")
     public String showUpdateUserForm(@PathVariable (value = "id") Long id, Model model) {
         UserEntity user = userService.findUserById(id);
         model.addAttribute("user", user);
         return "update_user";
     }
 
-    @PostMapping("/updateUser")
+    @PostMapping("updateUser")
     public String updateUser(UserEntity user) {
         // save employee to database
         userService.updateUser(user);
         return "users";
     }
 
-    @GetMapping("/deleteUser/{id}")
+    @GetMapping("deleteUser/{id}")
     public String deleteUser(@PathVariable (value = "id") Long id) {
         userService.deleteUser(id);
         return "users";
@@ -78,20 +78,13 @@ public class Controllers {
         return "new_application";
     }
 
-    @GetMapping("newApplicationByUser")
-    public String newApplicationByUser(Model model){
-        ApplicationEntity application = new ApplicationEntity();
-        model.addAttribute("application", application);
-        return "new_application_user";
-    }
-
     @GetMapping("getApplications")
     public String getApplications(Model model){
         model.addAttribute("listOfApplications", applicationService.getAllApplications());
         return "applications";
     }
 
-    @GetMapping("/getApplicationsByUser/{email}")
+    @GetMapping("getApplicationsByUser/{email}")
     public String getApplicationsById(@PathVariable (value="email") String email, Model model) {
         model.addAttribute("listOfApplications", applicationService.getApplicationsByUser(email));
         return "applications";
@@ -103,17 +96,32 @@ public class Controllers {
         return "applications";
     }
 
-    @GetMapping("/showUpdateApplication/{id}")
+    @PostMapping("saveApplicationForUser/{email}")
+    public String saveApplication(@PathVariable(value = "email") String email,ApplicationEntity applicationEntity){
+        System.out.println(applicationEntity.getEmail());
+        ApplicationEntity application = new ApplicationEntity();
+        application.setEmail(email);
+        application.setDateFrom(applicationEntity.getDateFrom());
+        application.setDateTo(applicationEntity.getDateTo());
+        applicationService.saveApplication(application);
+        return "applications";
+    }
+
+
+    @GetMapping("showUpdateApplication/{id}")
     public String showUpdateApplicationForm(@PathVariable ( value = "id") long id, Model model) {
         ApplicationEntity application = applicationService.findApplicationById(id);
         model.addAttribute("application", application);
         return "update_application";
     }
 
-    @PostMapping("/updateApplication")
+    @PostMapping("updateApplication")
     public String updateApplication(ApplicationEntity applicationEntity) {
         // save employee to database
         applicationService.saveApplication(applicationEntity);
         return "applications";
     }
+
+
+
 }
