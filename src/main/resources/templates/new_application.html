@@ -30,7 +30,6 @@
         <button type="submit" class="btn btn-info col-2">Save</button>
     </form>
 
-
     <form sec:authorize="hasAuthority('USER')" action="#" th:action="@{/saveApplicationForUser/{email}(email=${#request.remoteUser})}" th:object="${application}"
           method="POST">
 

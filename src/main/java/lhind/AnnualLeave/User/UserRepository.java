@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository <UserEntity, Long>{
 
     Optional<UserEntity> findByEmail(String email);
@@ -31,5 +31,8 @@ public interface UserRepository extends JpaRepository <UserEntity, Long>{
             "SET a.firstName = ?2, a.lastName = ?3, a.email = ?4, a.userRole = ?5, a.probation = ?6 " +
             "WHERE a.id = ?1")
     void save(Long id, String firstName, String lastName, String email, UserRole userRole, Integer probation);
+
+    @Query(value = "SELECT * from users where email = ?1", nativeQuery = true)
+    UserEntity getByEmail(String email);
 
 }

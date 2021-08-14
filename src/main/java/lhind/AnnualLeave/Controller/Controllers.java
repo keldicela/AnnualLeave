@@ -2,10 +2,7 @@ package lhind.AnnualLeave.Controller;
 
 import lhind.AnnualLeave.LeaveApplication.ApplicationEntity;
 import lhind.AnnualLeave.LeaveApplication.ApplicationService;
-import lhind.AnnualLeave.User.RegistrationService;
-import lhind.AnnualLeave.User.UserDTO;
-import lhind.AnnualLeave.User.UserEntity;
-import lhind.AnnualLeave.User.UserService;
+import lhind.AnnualLeave.User.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +17,7 @@ public class Controllers {
 
     private UserService userService;
 
-    RegistrationService registrationService;
+    private RegistrationService registrationService;
 
     @GetMapping("index")
     public String getIndex(){
@@ -52,7 +49,7 @@ public class Controllers {
     }
 
     @GetMapping("showUpdateUser/{id}")
-    public String showUpdateUserForm(@PathVariable (value = "id") Long id, Model model) {
+    public String showUpdateUserForm(@PathVariable (value="id") Long id, Model model) {
         UserEntity user = userService.findUserById(id);
         model.addAttribute("user", user);
         return "update_user";
@@ -109,7 +106,7 @@ public class Controllers {
 
 
     @GetMapping("showUpdateApplication/{id}")
-    public String showUpdateApplicationForm(@PathVariable ( value = "id") long id, Model model) {
+    public String showUpdateApplicationForm(@PathVariable (value = "id") long id, Model model) {
         ApplicationEntity application = applicationService.findApplicationById(id);
         model.addAttribute("application", application);
         return "update_application";
@@ -122,6 +119,36 @@ public class Controllers {
         return "applications";
     }
 
+    @GetMapping("signUp/forgotPassword")
+    public String forgotPasswordForm(Model model) {
+        ResetPasswordData reset = new ResetPasswordData();
+        model.addAttribute("reset", reset);
+        return "forgot_password";
+    }
 
+    @PostMapping("signUp/sendEmailConfirmation")
+    public String forgotPassword(ResetPasswordData reset) {
+        return userService.sendResetPasswordEmail(reset);
+    }
 
+    @GetMapping("signUp/resetPassword")
+    public String resetPassword(@RequestParam("token") String token, final ResetPasswordData data, final Model model){
+        if(token.isEmpty()){
+            throw new IllegalStateException("Token is empty.");
+        }
+        ResetPasswordData resetData = new ResetPasswordData();
+        resetData.setToken(token);
+        setResetPasswordForm(model, resetData);
+
+        return "confirm_password";
+    }
+
+    private void setResetPasswordForm(final Model model, final ResetPasswordData data){
+        model.addAttribute("resetData", data);
+    }
+
+    @PostMapping("signUp/resetPasswordConfirmation")
+    public String resetPassword(ResetPasswordData resetData) {
+        return userService.updatePassword(resetData);
+    }
 }

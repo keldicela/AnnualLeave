@@ -13,7 +13,6 @@ import java.util.Optional;
 public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken, Long> {
     Optional<ConfirmationToken> findByToken(String token);
 
-
     @Transactional
     @Modifying
     @Query(value = "UPDATE ConfirmationToken c " +
@@ -25,5 +24,10 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
     @Modifying
     @Query(value = "delete from confirmation_token where user_id = ?1", nativeQuery = true)
     void deleteConfirmationToken(Long id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from confirmation_token where token = ?1", nativeQuery = true)
+    void deleteTokenByToken(String token);
 
 }

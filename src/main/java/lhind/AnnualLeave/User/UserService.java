@@ -1,10 +1,13 @@
 package lhind.AnnualLeave.User;
 
+import lhind.AnnualLeave.Email.EmailSender;
+import lhind.AnnualLeave.Email.EmailTemplates;
 import lhind.AnnualLeave.LeaveApplication.ApplicationEntity;
 import lhind.AnnualLeave.Token.ConfirmationToken;
 import lhind.AnnualLeave.Token.ConfirmationTokenRepository;
 import lhind.AnnualLeave.Token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +26,9 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final ConfirmationTokenService confirmationTokenService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private EmailTemplates emailTemplates;
+    private EmailSender emailSender;
 
 
     public List<UserEntity> getAllUsers(){
@@ -55,6 +61,10 @@ public class UserService implements UserDetailsService {
         return userRepository.getById(id);
     }
 
+    public UserEntity findUserByEmail(String email){
+        return userRepository.getByEmail(email);
+    }
+
 
     public void updateUser(UserEntity userEntity){
         userRepository.save(userEntity.getId(),
@@ -72,5 +82,44 @@ public class UserService implements UserDetailsService {
 
     public int enableAppUser(String email) {
         return userRepository.enableAppUser(email);
+    }
+
+    public String sendResetPasswordEmail(ResetPasswordData resetData){
+        boolean userExists = userRepository.findByEmail(resetData.getEmail()).isPresent();
+        if (!userExists){
+            throw new IllegalStateException("No user found with this email." + resetData.getEmail());
+        }
+        UserEntity user = findUserByEmail(resetData.getEmail());
+        String token  = UUID.randomUUID().toString();
+        ConfirmationToken confirmation = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
+        confirmationTokenService.saveConfirmationToken(confirmation);
+
+        String link = "http://localhost:7799/signUp/resetPassword?token="+token;
+        emailSender.send(
+                user.getEmail(),
+                emailTemplates.buildResetPasswordEmail(user.getFirstName(), link));
+        return "login";
+    }
+
+    public String updatePassword(ResetPasswordData data){
+        if(!data.getPassword().equals(data.getRepeatPassword())){
+            throw new IllegalStateException("Password and repeat password do not match.");
+        }
+
+        ConfirmationToken confirmationToken = confirmationTokenService.getToken(data.getToken())
+                .orElseThrow(() -> new IllegalStateException("Token not found."));
+
+        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("Token has expired");
+        }
+
+        UserEntity user = findUserByEmail(confirmationToken.getUser().getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(data.getPassword()));
+
+        confirmationTokenService.deleteToken(data.getToken());
+
+        return "password_success";
     }
 }
