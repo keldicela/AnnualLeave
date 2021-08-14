@@ -32,5 +32,6 @@ public class ApplicationEntity {
     private Long days;
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
+    private String comment;
 
 }

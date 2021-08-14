@@ -1,8 +1,10 @@
 package lhind.AnnualLeave.LeaveApplication;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,5 +18,20 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
 
     @Query(value = "select * from applications a where a.email = :email", nativeQuery = true)
     List<ApplicationEntity> findApplicationsByEmail(String email);
+
+    @Query(value = "select * from applications a where status = 'PENDING' ", nativeQuery = true)
+    List<ApplicationEntity> findApplicationsRequests();
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE ApplicationEntity a " +
+            "SET a.status = 'APPROVED' WHERE a.id = ?1")
+    void approveRequestById(Long id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE ApplicationEntity a " +
+            "SET a.status = 'DECLINED', a.comment= ?2 WHERE a.id = ?1")
+    void declineRequestById(Long id, String comment);
 }
 

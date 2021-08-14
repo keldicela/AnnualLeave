@@ -119,6 +119,33 @@ public class Controllers {
         return "applications";
     }
 
+    @GetMapping("getRequests")
+    public String getRequests(Model model){
+        model.addAttribute("listOfApplications", applicationService.getApplicationsRequests());
+        return "requests";
+    }
+
+    @GetMapping("approveRequest/{id}")
+    public String approveRequest(@PathVariable (value = "id") Long id) {
+//        System.out.println(id);
+        applicationService.approveRequest(id);
+        return "requests";
+    }
+
+    @GetMapping("showDeclineForm/{id}")
+    public String showDeclineForm(@PathVariable (value="id") Long id, Model model) {
+        ApplicationEntity application = applicationService.findApplicationById(id);
+        model.addAttribute("application", application);
+        return "decline_request";
+    }
+
+    @PostMapping("declineRequest")
+    public String declineRequest(ApplicationEntity application) {
+        applicationService.declineRequest(application.getId(), application.getComment());
+        // save employee to database
+        return "requests";
+    }
+
     @GetMapping("signUp/forgotPassword")
     public String forgotPasswordForm(Model model) {
         ResetPasswordData reset = new ResetPasswordData();

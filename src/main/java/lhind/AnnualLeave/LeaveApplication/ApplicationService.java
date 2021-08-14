@@ -20,8 +20,22 @@ public class ApplicationService {
         return applicationRepository.findAll();
     }
 
+    public List<ApplicationEntity> getApplicationsRequests(){
+        return applicationRepository.findApplicationsRequests();
+    }
+
     public List<ApplicationEntity> getApplicationsByUser(String email){
         return applicationRepository.findApplicationsByEmail(email);
+    }
+
+    public void approveRequest(Long id){
+//        System.out.println(id);
+        applicationRepository.approveRequestById(id);
+    }
+
+    public void declineRequest(Long id, String comment){
+//        System.out.println(id);
+        applicationRepository.declineRequestById(id, comment);
     }
 
      public void saveApplication(ApplicationEntity applicationEntity){

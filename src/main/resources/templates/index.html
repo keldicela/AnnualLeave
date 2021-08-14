@@ -28,21 +28,11 @@
                 </li>
 <!--                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">-->
                 <li class="nav-item">
-                <a sec:authorize="hasAuthority('SUPERVISOR')" class="nav-link" href="#" th:href="@{~/admin/index}">Requests</a>
-                </li>
-<!--                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')" class="nav-item">-->
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{~/management/index}">Management</a>
-                </li>
-                <li>
-<!--                    <span class="nav-link"> [[${#request.remoteUser}]] </span>-->
+                <a sec:authorize="hasAuthority('SUPERVISOR')" class="nav-link" href="#" th:href="@{~/getRequests}">Requests</a>
                 </li>
             </ul>
 
             <span class="nav-link"> [[${#request.remoteUser}]] </span>
-
-<!--            <a class="nav-link" href="#" th:href="@{~/updatePassword}">Update Password </a>-->
-
 
             <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/logout}">
 
