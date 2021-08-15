@@ -24,10 +24,6 @@ public class Controllers {
 
     private RegistrationService registrationService;
 
-    private EmailService emailService;
-
-    private EmailTemplates emailTemplate;
-
     @GetMapping("index")
     public String getIndex(){
         return "index";

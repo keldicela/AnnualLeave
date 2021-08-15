@@ -8,8 +8,10 @@ import lhind.AnnualLeave.User.UserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.List;
 
 @AllArgsConstructor
@@ -40,7 +42,7 @@ public class ApplicationService {
         ApplicationEntity application = findApplicationById(id);
 
         UserEntity user = userRepository.getByEmail(application.getEmail());
-        Long total = user.getLeaveDays() - getWeekDays(application.getDateFrom(), application.getDateTo());
+        Long total = user.getLeaveDays() - getWorkingDays(application.getDateFrom(), application.getDateTo());
 
         if(total < 0){
             throw new IllegalStateException("User does not have enough Leave Days");
@@ -62,7 +64,7 @@ public class ApplicationService {
 
      public void saveApplication(ApplicationEntity applicationEntity){
          UserEntity user = userRepository.getByEmail(applicationEntity.getEmail());
-         Long total = user.getLeaveDays() - getWeekDays(applicationEntity.getDateFrom(), applicationEntity.getDateTo());
+         Long total = user.getLeaveDays() - getWorkingDays(applicationEntity.getDateFrom(), applicationEntity.getDateTo());
 
          if(user.getProbation()<90){
              throw new IllegalStateException("User has less that 90 days of probation.");
@@ -80,7 +82,7 @@ public class ApplicationService {
          application.setEmail(applicationEntity.getEmail());
          application.setDateFrom(applicationEntity.getDateFrom());
          application.setDateTo(applicationEntity.getDateTo());
-         application.setDays(getWeekDays(applicationEntity.getDateFrom(), applicationEntity.getDateTo()));
+         application.setDays(getWorkingDays(applicationEntity.getDateFrom(), applicationEntity.getDateTo()));
          application.setStatus(ApplicationStatus.PENDING);
 
          applicationRepository.save(application);
@@ -108,11 +110,33 @@ public class ApplicationService {
         applicationRepository.deleteById(id);
     }
 
-    public long getWeekDays(LocalDate dayFrom, LocalDate dayTo){
+    public long getWorkingDays(LocalDate dayFrom, LocalDate dayTo){
 
-        final long days = (ChronoUnit.DAYS.between(dayFrom, dayTo));
-        final long weekDays = days - 2*(days/7); //remove weekends
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        long workingDays = 0;
+        try
+        {
+            Calendar start = Calendar.getInstance();
+            start.setTime(sdf.parse(dayFrom.toString()));
+            System.out.println("Start date: " + start);
+            Calendar end = Calendar.getInstance();
+            System.out.println("End date: " + end);
 
-        return weekDays;
+            end.setTime(sdf.parse(dayTo.toString()));
+            while(!start.after(end))
+            {
+                long day = start.get(Calendar.DAY_OF_WEEK);
+                if ((day != Calendar.SATURDAY) && (day != Calendar.SUNDAY)) {
+                    workingDays++;
+                }
+                start.add(Calendar.DATE, 1);
+            }
+            System.out.println(workingDays);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return workingDays;
     }
 }
