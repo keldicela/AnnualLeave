@@ -27,12 +27,11 @@ public class RegistrationService {
                         user.getEmail(),
                         user.getPassword(),
                         user.getUserRole(),
-                        user.getProbation()));
+                        user.getProbation(),
+                        user.getLeaveDays()));
 
         String link = "http://localhost:7799/api/signUp/confirm?token=" + token;
-        emailSender.send(
-                user.getEmail(),
-                emailTemplates.buildRegistrationEmail(user.getFirstName(), link));
+        emailSender.send(user.getEmail(), emailTemplates.buildRegistrationEmail(user.getFirstName(), link));
         return token;
     }
 
@@ -41,7 +40,6 @@ public class RegistrationService {
                 .getToken(token)
                 .orElseThrow(() ->
                         new IllegalStateException("token not found"));
-
         if (confirmationToken.getConfirmedAt() != null) {
             throw new IllegalStateException("email already confirmed");
         }

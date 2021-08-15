@@ -1,5 +1,8 @@
 package lhind.AnnualLeave.Controller;
 
+import lhind.AnnualLeave.Email.EmailSender;
+import lhind.AnnualLeave.Email.EmailService;
+import lhind.AnnualLeave.Email.EmailTemplates;
 import lhind.AnnualLeave.LeaveApplication.ApplicationEntity;
 import lhind.AnnualLeave.LeaveApplication.ApplicationService;
 import lhind.AnnualLeave.User.*;
@@ -7,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Controller
@@ -18,6 +23,10 @@ public class Controllers {
     private UserService userService;
 
     private RegistrationService registrationService;
+
+    private EmailService emailService;
+
+    private EmailTemplates emailTemplate;
 
     @GetMapping("index")
     public String getIndex(){
@@ -78,12 +87,14 @@ public class Controllers {
     @GetMapping("getApplications")
     public String getApplications(Model model){
         model.addAttribute("listOfApplications", applicationService.getAllApplications());
+        System.out.println(applicationService.getAllApplications().toString());
         return "applications";
     }
 
     @GetMapping("getApplicationsByUser/{email}")
     public String getApplicationsById(@PathVariable (value="email") String email, Model model) {
         model.addAttribute("listOfApplications", applicationService.getApplicationsByUser(email));
+        model.addAttribute("leaveDays", userService.getLeaveDays(email));
         return "applications";
     }
 
@@ -94,16 +105,22 @@ public class Controllers {
     }
 
     @PostMapping("saveApplicationForUser/{email}")
-    public String saveApplication(@PathVariable(value = "email") String email,ApplicationEntity applicationEntity){
+    public String saveApplication(@PathVariable(value = "email") String email, ApplicationEntity applicationEntity){
         System.out.println(applicationEntity.getEmail());
         ApplicationEntity application = new ApplicationEntity();
         application.setEmail(email);
         application.setDateFrom(applicationEntity.getDateFrom());
         application.setDateTo(applicationEntity.getDateTo());
         applicationService.saveApplication(application);
+//        emailService.sendEmailToSupervisors();
         return "applications";
     }
 
+    @GetMapping("deleteApplication/{id}")
+    public String deleteApplication(@PathVariable (value = "id") Long id) {
+        applicationService.deleteApplicationById(id);
+        return "applications";
+    }
 
     @GetMapping("showUpdateApplication/{id}")
     public String showUpdateApplicationForm(@PathVariable (value = "id") long id, Model model) {
@@ -114,7 +131,6 @@ public class Controllers {
 
     @PostMapping("updateApplication")
     public String updateApplication(ApplicationEntity applicationEntity) {
-        // save employee to database
         applicationService.saveApplication(applicationEntity);
         return "applications";
     }
@@ -178,4 +194,5 @@ public class Controllers {
     public String resetPassword(ResetPasswordData resetData) {
         return userService.updatePassword(resetData);
     }
+
 }

@@ -15,4 +15,5 @@ public class UserDTO {
     private final String password;
     private final UserRole userRole;
     private final Integer probation;
+    private final Long leaveDays;
 }

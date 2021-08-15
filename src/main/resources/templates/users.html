@@ -21,6 +21,7 @@
             <th>Surname</th>
             <th>Email</th>
             <th>Probation</th>
+            <th>Leave Days</th>
             <th>Role</th>
         </tr>
         </thead>
@@ -30,6 +31,7 @@
             <td th:text="${user.lastName}"></td>
             <td th:text="${user.email}"></td>
             <td th:text="${user.probation}"></td>
+            <td th:text="${user.leaveDays}"></td>
             <td th:text="${user.userRole}"></td>
             <td>
                 <a th:href="@{/showUpdateUser/{id}(id=${user.id})}" class="btn btn-outline-primary">Update</a>

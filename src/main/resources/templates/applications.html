@@ -38,6 +38,11 @@
                 <a th:href="@{/deleteApplication/{id}(id=${applications.id})}" class="btn btn-outline-danger">Delete</a>
             </td>
         </tr>
+        <tr th:each="message : ${leaveDays}">
+            <div>
+                <span>Leave days left:</span>
+                <span th:text="${message}"></span>
+            </div>
         </tbody>
     </table>
 </div>

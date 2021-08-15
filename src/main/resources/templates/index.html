@@ -19,8 +19,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a sec:authorize="hasAuthority('SUPERVISOR')" class="nav-link" href="#" th:href="@{~/getApplications}"></i>Applications</a>
-                    <a sec:authorize="hasAuthority('USER')" class="nav-link" href="#" th:href="@{~/getApplicationsByUser/{email}(email=${#request.remoteUser})}"></i>Applications</a>
+                    <a sec:authorize="hasAuthority('SUPERVISOR')" class="nav-link" href="#" th:href="@{~/getApplications}"> </i>Applications</a>
+                    <a sec:authorize="hasAuthority('USER')" class="nav-link" href="#" th:href="@{~/getApplicationsByUser/{email}(email=${#request.remoteUser})}"> </i>Applications</a>
                 </li>
 <!--                <li sec:authorize="isAuthenticated()" class="nav-item">-->
                 <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">

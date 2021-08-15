@@ -36,19 +36,22 @@ public class UserEntity implements UserDetails {
     private Integer probation;
     private Boolean locked = false;
     private Boolean enabled = false;
+    private Long leaveDays;
 
     public UserEntity(String firstName,
                       String lastName,
                       String email,
                       String password,
                       UserRole userRole,
-                      Integer probation) {
+                      Integer probation,
+                      Long leaveDays) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.userRole = userRole;
         this.probation = probation;
+        this.leaveDays = leaveDays;
     }
 
     @Override

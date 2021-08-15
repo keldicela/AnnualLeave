@@ -2,9 +2,7 @@ package lhind.AnnualLeave.User;
 
 import lhind.AnnualLeave.Email.EmailSender;
 import lhind.AnnualLeave.Email.EmailTemplates;
-import lhind.AnnualLeave.LeaveApplication.ApplicationEntity;
 import lhind.AnnualLeave.Token.ConfirmationToken;
-import lhind.AnnualLeave.Token.ConfirmationTokenRepository;
 import lhind.AnnualLeave.Token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, email)));
     }
 
+    public Long getLeaveDays(String email){
+        return userRepository.findLeaveDays(email);
+    }
 
     public String signUpUser(UserEntity userEntity){
         boolean userExists = userRepository.findByEmail(userEntity.getEmail()).isPresent();
@@ -72,7 +73,8 @@ public class UserService implements UserDetailsService {
                 userEntity.getLastName(),
                 userEntity.getEmail(),
                 userEntity.getUserRole(),
-                userEntity.getProbation());
+                userEntity.getProbation(),
+                userEntity.getLeaveDays());
     }
 
     public void deleteUser(Long id){

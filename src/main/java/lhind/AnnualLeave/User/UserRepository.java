@@ -15,22 +15,22 @@ public interface UserRepository extends JpaRepository <UserEntity, Long>{
 
     Optional<UserEntity> findByEmail(String email);
 
+    @Query("select leaveDays from UserEntity a where a.email = ?1 ")
+    Long findLeaveDays(String email);
+
+
     @Transactional
     @Modifying
     @Query("UPDATE UserEntity a " +
             "SET a.enabled = TRUE WHERE a.email = ?1")
     int enableAppUser(String email);
 
-    @Query("SELECT probation from UserEntity where email = ?1")
-    Integer getProbation(String email);
-
-
     @Transactional
     @Modifying
     @Query("UPDATE UserEntity a " +
-            "SET a.firstName = ?2, a.lastName = ?3, a.email = ?4, a.userRole = ?5, a.probation = ?6 " +
+            "SET a.firstName = ?2, a.lastName = ?3, a.email = ?4, a.userRole = ?5, a.probation = ?6, a.leaveDays = ?7 " +
             "WHERE a.id = ?1")
-    void save(Long id, String firstName, String lastName, String email, UserRole userRole, Integer probation);
+    void save(Long id, String firstName, String lastName, String email, UserRole userRole, Integer probation, Long leaveDays);
 
     @Query(value = "SELECT * from users where email = ?1", nativeQuery = true)
     UserEntity getByEmail(String email);
