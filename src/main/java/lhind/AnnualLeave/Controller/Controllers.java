@@ -46,8 +46,9 @@ public class Controllers {
     }
 
     @PostMapping("signUp/register")
-    public String register(UserDTO request){
+    public String register(UserDTO request, Model model){
         registrationService.register(request);
+        model.addAttribute("listOfUsers", userService.getAllUsers());
         return "users";
     }
 
@@ -65,15 +66,17 @@ public class Controllers {
     }
 
     @PostMapping("updateUser")
-    public String updateUser(UserEntity user) {
+    public String updateUser(UserEntity user, Model model) {
         // save employee to database
         userService.updateUser(user);
+        model.addAttribute("listOfUsers", userService.getAllUsers());
         return "users";
     }
 
     @GetMapping("deleteUser/{id}")
-    public String deleteUser(@PathVariable (value = "id") Long id) {
+    public String deleteUser(@PathVariable (value = "id") Long id, Model model) {
         userService.deleteUser(id);
+        model.addAttribute("listOfUsers", userService.getAllUsers());
         return "users";
     }
 
@@ -99,19 +102,23 @@ public class Controllers {
     }
 
     @PostMapping("saveApplication")
-    public String saveApplication(ApplicationEntity applicationEntity){
+    public String saveApplication(ApplicationEntity applicationEntity, Model model){
         applicationService.saveApplication(applicationEntity);
+        model.addAttribute("listOfApplications", applicationService.getAllApplications());
         return "applications";
     }
 
     @PostMapping("saveApplicationForUser/{email}")
-    public String saveApplication(@PathVariable(value = "email") String email, ApplicationEntity applicationEntity){
+    public String saveApplication(@PathVariable(value = "email") String email, ApplicationEntity applicationEntity, Model model){
         System.out.println(applicationEntity.getEmail());
         ApplicationEntity application = new ApplicationEntity();
         application.setEmail(email);
         application.setDateFrom(applicationEntity.getDateFrom());
         application.setDateTo(applicationEntity.getDateTo());
         applicationService.saveApplication(application);
+        List<ApplicationEntity> userApplications = applicationService.getApplicationsByUser(email);
+        model.addAttribute("listOfApplications", userApplications);
+        model.addAttribute("leaveDays", userService.getLeaveDays(email));
 //        emailService.sendEmailToSupervisors();
         return "applications";
     }
@@ -132,7 +139,7 @@ public class Controllers {
     @PostMapping("updateApplication")
     public String updateApplication(ApplicationEntity applicationEntity) {
         applicationService.saveApplication(applicationEntity);
-        return "applications";
+        return "index";
     }
 
     @GetMapping("getRequests")
@@ -142,9 +149,10 @@ public class Controllers {
     }
 
     @GetMapping("approveRequest/{id}")
-    public String approveRequest(@PathVariable (value = "id") Long id) {
+    public String approveRequest(@PathVariable (value = "id") Long id, Model model) {
 //        System.out.println(id);
         applicationService.approveRequest(id);
+        model.addAttribute("listOfApplications", applicationService.getApplicationsRequests());
         return "requests";
     }
 
@@ -156,8 +164,9 @@ public class Controllers {
     }
 
     @PostMapping("declineRequest")
-    public String declineRequest(ApplicationEntity application) {
+    public String declineRequest(ApplicationEntity application, Model model) {
         applicationService.declineRequest(application.getId(), application.getComment());
+        model.addAttribute("listOfApplications", applicationService.getApplicationsRequests());
         // save employee to database
         return "requests";
     }
