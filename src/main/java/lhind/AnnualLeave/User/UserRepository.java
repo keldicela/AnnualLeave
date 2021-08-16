@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository <UserEntity, Long>{
 
     Optional<UserEntity> findByEmail(String email);
 
-    @Query("select leaveDays from UserEntity a where a.email = ?1 ")
+    @Query("select a.leaveDays from UserEntity a where a.email = ?1 ")
     Long findLeaveDays(String email);
 
 
@@ -31,6 +31,14 @@ public interface UserRepository extends JpaRepository <UserEntity, Long>{
             "SET a.firstName = ?2, a.lastName = ?3, a.email = ?4, a.userRole = ?5, a.probation = ?6, a.leaveDays = ?7 " +
             "WHERE a.id = ?1")
     void save(Long id, String firstName, String lastName, String email, UserRole userRole, Integer probation, Long leaveDays);
+
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE UserEntity a " +
+            "SET a.leaveDays = ?2 " +
+            "WHERE a.id = ?1")
+    void updateLeaveDays(Long id, Long leaveDays);
 
     @Query(value = "SELECT * from users where email = ?1", nativeQuery = true)
     UserEntity getByEmail(String email);

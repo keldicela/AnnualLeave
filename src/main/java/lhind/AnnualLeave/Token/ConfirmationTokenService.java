@@ -29,8 +29,4 @@ public class ConfirmationTokenService {
         confirmationTokenRepository.deleteConfirmationToken(id);
     }
 
-    public void deleteToken(String token){
-        confirmationTokenRepository.deleteTokenByToken(token);
-    }
-
 }

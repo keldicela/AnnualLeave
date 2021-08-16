@@ -120,8 +120,6 @@ public class UserService implements UserDetailsService {
         UserEntity user = findUserByEmail(confirmationToken.getUser().getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(data.getPassword()));
 
-        confirmationTokenService.deleteToken(data.getToken());
-
         return "password_success";
     }
 }

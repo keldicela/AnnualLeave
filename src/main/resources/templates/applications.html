@@ -34,7 +34,7 @@
             <td th:text="${applications.status}"></td>
             <td th:text="${applications.comment}"></td>
             <td>
-                <a th:href="@{/showUpdateApplication/{id}(id=${applications.id})}" class="btn btn-outline-primary">Update</a>
+                <a th:if="${applications.status eq applications.status.PENDING}" th:href="@{/showUpdateApplication/{id}(id=${applications.id})}" class="btn btn-outline-primary">Update</a>
                 <a th:href="@{/deleteApplication/{id}(id=${applications.id})}" class="btn btn-outline-danger">Delete</a>
             </td>
         </tr>

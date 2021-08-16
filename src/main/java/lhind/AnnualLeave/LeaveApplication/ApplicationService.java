@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class ApplicationService {
             throw new IllegalStateException("User does not have enough Leave Days");
         }
         else{
-            userRepository.save(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUserRole(), user.getProbation(), total);}
+            userRepository.updateLeaveDays(user.getId(), total);}
 
             applicationRepository.approveRequestById(id);
             emailService.send(user.getEmail(), emailTemplate.buildApprovalEmailForUser(user.getFirstName(), application.getDays()));
@@ -105,7 +104,7 @@ public class ApplicationService {
         UserEntity user = userRepository.getByEmail(application.getEmail());
         if(application.getStatus().equals(ApplicationStatus.APPROVED)){
             Long total = user.getLeaveDays() + application.getDays();
-            userRepository.save(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUserRole(), user.getProbation(), total);
+            userRepository.updateLeaveDays(user.getId(), total);
         }
         applicationRepository.deleteById(id);
     }
