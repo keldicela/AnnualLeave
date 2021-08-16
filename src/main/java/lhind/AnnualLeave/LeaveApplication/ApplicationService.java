@@ -41,13 +41,11 @@ public class ApplicationService {
         ApplicationEntity application = findApplicationById(id);
 
         UserEntity user = userRepository.getByEmail(application.getEmail());
-        Long total = user.getLeaveDays() - getWorkingDays(application.getDateFrom(), application.getDateTo());
+        Long total = userRepository.getLeaveDays(application.getEmail()) - getWorkingDays(application.getDateFrom(), application.getDateTo());
 
         if(total < 0){
             throw new IllegalStateException("User does not have enough Leave Days");
         }
-        else{
-            userRepository.updateLeaveDays(user.getId(), total);}
 
             applicationRepository.approveRequestById(id);
             emailService.send(user.getEmail(), emailTemplate.buildApprovalEmailForUser(user.getFirstName(), application.getDays()));
@@ -63,7 +61,7 @@ public class ApplicationService {
 
      public void saveApplication(ApplicationEntity applicationEntity){
          UserEntity user = userRepository.getByEmail(applicationEntity.getEmail());
-         Long total = user.getLeaveDays() - getWorkingDays(applicationEntity.getDateFrom(), applicationEntity.getDateTo());
+         Long total = userRepository.getLeaveDays(applicationEntity.getEmail()) - getWorkingDays(applicationEntity.getDateFrom(), applicationEntity.getDateTo());
 
          if(user.getProbation()<90){
              throw new IllegalStateException("User has less that 90 days of probation.");
@@ -102,10 +100,7 @@ public class ApplicationService {
     public void deleteApplicationById(Long id){
         ApplicationEntity application = findApplicationById(id);
         UserEntity user = userRepository.getByEmail(application.getEmail());
-        if(application.getStatus().equals(ApplicationStatus.APPROVED)){
-            Long total = user.getLeaveDays() + application.getDays();
-            userRepository.updateLeaveDays(user.getId(), total);
-        }
+
         applicationRepository.deleteById(id);
     }
 

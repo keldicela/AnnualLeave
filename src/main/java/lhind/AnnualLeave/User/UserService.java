@@ -39,8 +39,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, email)));
     }
 
+
     public Long getLeaveDays(String email){
-        return userRepository.findLeaveDays(email);
+        return userRepository.getLeaveDays(email);
     }
 
     public String signUpUser(UserEntity userEntity){
