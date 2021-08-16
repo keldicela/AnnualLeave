@@ -5,8 +5,12 @@ import lhind.AnnualLeave.Email.EmailService;
 import lhind.AnnualLeave.Email.EmailTemplates;
 import lhind.AnnualLeave.LeaveApplication.ApplicationEntity;
 import lhind.AnnualLeave.LeaveApplication.ApplicationService;
+import lhind.AnnualLeave.Token.ConfirmationToken;
+import lhind.AnnualLeave.Token.ConfirmationTokenService;
 import lhind.AnnualLeave.User.*;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,8 @@ public class Controllers {
     private UserService userService;
 
     private RegistrationService registrationService;
+
+    private ConfirmationTokenService confirmationTokenService;
 
     @GetMapping("index")
     public String getIndex(){
@@ -181,8 +187,12 @@ public class Controllers {
 
     @GetMapping("signUp/resetPassword")
     public String resetPassword(@RequestParam("token") String token, final ResetPasswordData data, final Model model){
-        if(token.isEmpty()){
-            throw new IllegalStateException("Token is empty.");
+
+        ConfirmationToken confirmationToken = confirmationTokenService.getToken(data.getToken())
+                .orElseThrow(() -> new IllegalStateException("Token not found."));
+
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new IllegalStateException("This token has already been used to reset your password");
         }
         ResetPasswordData resetData = new ResetPasswordData();
         resetData.setToken(token);

@@ -15,12 +15,10 @@ public interface UserRepository extends JpaRepository <UserEntity, Long>{
 
     Optional<UserEntity> findByEmail(String email);
 
-    @Query(value = "select ((u.leave_days) - sum(a.days)) as daysleft \n" +
-            "from users u, applications a \n" +
-            "where a.status = 'APPROVED' \n" +
-            "and u.email = a.email \n" +
-            "and a.email = :email \n" +
-            "group by u.id " , nativeQuery = true)
+    @Query(value = "select u.leave_days - coalesce(SUM(a.days), 0) as daysleft\n" +
+            "from users u left join applications a on u.email=a.email AND a.status = 'APPROVED'\n" +
+            "where u.email = :email \n" +
+            "group by u.email, u.leave_days" , nativeQuery = true)
     Long getLeaveDays(String email);
 
     @Transactional
